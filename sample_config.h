@@ -10,6 +10,7 @@
 // broker password or blank
 #define BROKER_PASS ""
 // base topic to publish on (will append "/<wifi MAC id>/temp")
+// status (1 or 0) published as will to topic (TOPIC_ROOT/<wifi MAC id>/status)
 #define TOPIC_ROOT "Devices"
 // override default timeout from PubSubClient lib
 #define MQTT_KEEPALIVE 60

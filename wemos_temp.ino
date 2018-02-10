@@ -52,6 +52,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 String clientId;
 String topic;
+String willTopic;
 
 void wait10(){
   for(int i=0; i<10; i++){
@@ -72,7 +73,8 @@ void setup(void)
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   topic = String(TOPIC_ROOT)+"/"+WiFi.macAddress()+"/temp";
-  Serial.print("TOPIC: "+topic);
+  willTopic = String(TOPIC_ROOT)+"/"+WiFi.macAddress()+"/status";
+  Serial.println("TOPIC: "+topic);
 
   //set mqtt
   clientId = WiFi.macAddress();
@@ -117,8 +119,9 @@ void checkComms(){
         Serial.print("MQTT connecting...");
         while (!client.connected()) {
         Serial.print(".");
-            if (client.connect(clientId.c_str(), "use-token-auth", BROKER_PASS)) {
+            if (client.connect(clientId.c_str(), "use-token-auth", BROKER_PASS, willTopic.c_str(), 0, 1, "0")) {
                 Serial.println("connected");
+                client.publish (willTopic.c_str(), "1", true);
             }else {
                 Serial.print("failed, rc=");
                 Serial.println(client.state());
@@ -139,7 +142,7 @@ void loop(void)
   Serial.println("C");
   
   //TODO something with boolean RC
-  client.publish (topic.c_str(), String(tempC,2).c_str(), false);
+  client.publish (topic.c_str(), String(tempC,2).c_str(), true);
 
 
 //TODO #def - also how much does this affect an accurate reading
