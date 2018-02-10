@@ -12,7 +12,7 @@
 // base topic to publish on (will append "/<wifi MAC id>/temp")
 #define TOPIC_ROOT "Devices"
 // override default timeout from PubSubClient lib
-#define MQTT_KEEPALIVE 120
+#define MQTT_KEEPALIVE 60
 
 //Pin to use for onewire device, don't forget 4.7k resistor from +5v to data
 #define ONE_WIRE_BUS D4
